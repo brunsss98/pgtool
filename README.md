@@ -1,6 +1,6 @@
 # PGTool Modular Skeleton
 
-Este repositorio representa el inicio de la migración del script original `pgtool2.sh` hacia una arquitectura modular, extensible y mantenible para la gestión de PostgreSQL.
+Este repositorio contiene la base de **PGTool**, un conjunto de utilidades modular y extensible para la gestión de PostgreSQL. El proyecto fue reescrito desde cero aprovechando fragmentos del script anterior.
 
 ## 📁 Estructura del proyecto
 
@@ -32,7 +32,6 @@ El menú se genera dinámicamente cargando todos los plugins que contengan una f
 - `pgpass_manage.sh`: añade y elimina entradas en `.pgpass`.
 - `backup_core.sh`: realiza backups físicos/lógicos definidos en `etc/connections.json`.
 - `backup_logical.sh`: permite ejecutar backups lógicos en varios formatos (`custom`, `plain`, `directory`, etc).
-- `legacy_backup.sh`: ejecuta el antiguo `pgtool2.sh` para compatibilidad.
 
 ## ⚙ Configuración
 
