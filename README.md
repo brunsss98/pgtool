@@ -1,22 +1,27 @@
-# PGTool Modular Skeleton
+# PGTool
 
-Este repositorio representa el inicio de la migración del script original `pgtool2.sh` hacia una arquitectura modular y extensible.
+PGTool is a modular Bash toolkit for PostgreSQL management. The project provides a lightweight plugin-based framework to handle backups, monitoring and administration tasks without external dependencies.
 
-## 📁 Estructura
+## Directory structure
 
-- `bin/pgtool.sh` – Punto de entrada principal y cargador del menú.
-- `lib/` – Bibliotecas reutilizables:
-  - `colors.sh`: estilos y colores para el terminal.
-  - `log.sh`: logging uniforme.
-  - `utils.sh`: utilidades generales.
-  - `pgpass.sh`: gestión de credenciales `.pgpass`.
-  - `menu.sh`: sistema de menús interactivos.
-  - `config.sh`: (opcional) para leer configuraciones como `etc/connections.json`.
-- `plugins/` – Extensiones cargadas dinámicamente. Incluye ejemplos como:
-  - `ejemplo_hello.sh`: plugin de ejemplo básico.
-  - `pgpass_manage.sh`: gestión de entradas en `.pgpass`.
-  - `backup_core.sh`: backups automáticos según `etc/connections.json`.
-  - `backup_logical.sh`: módulo de backup lógico con soporte extendido.
+```
+pgtool/
+├── bin/              # entrypoints
+│   └── pgtool.sh     # main launcher and menu
+├── lib/              # reusable libraries
+├── modules/          # grouped functionality (backup, monitoring...)
+├── plugins/          # optional extensions loaded at startup
+├── etc/              # user configuration files
+├── backups/          # default backup location
+└── logs/             # unified logs
+```
+
+See `modules/` and `plugins/` for examples of how to extend the tool. Each plugin defines a `plugin_register` function that returns its metadata and callback.
+After cloning the repository simply run:
+The launcher discovers plugins in the `plugins/` directory and adds them to the menu automatically.
+Configuration for backups can be stored in `etc/connections.json` and is parsed by `lib/config.sh` without requiring `jq`.
+## Status
+This repository contains an initial skeleton. More modules will be added over time for monitoring, user management and maintenance. Contributions are welcome.
   - `legacy_backup.sh`: lanza el antiguo `pgtool2.sh`.
 
 ## 🚀 Uso
