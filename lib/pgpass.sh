@@ -49,26 +49,38 @@ pgpass::add() {
 }
 
 pgpass::delete() {
-    local idx pgp
+    local idx pgp line_num
     pgp="$(pgpass::file)"
     pgpass::list
     read -r -p "Index to delete: " idx
-    sed -i "${idx}d" "$pgp"
+    mapfile -t lines < "$pgp"
+    if (( idx < 0 || idx >= ${#lines[@]} )); then
+        echo "Invalid index"
+        return 1
+    fi
+    line_num=$((idx + 1))
+    sed -i "${line_num}d" "$pgp"
     echo "Deleted"
 }
 
 pgpass::edit() {
-    local idx pgp host port db user pass
+    local idx pgp host port db user pass line_num
     pgp="$(pgpass::file)"
     pgpass::list
     read -r -p "Index to edit: " idx
-    IFS=: read -r host port db user pass < <(sed -n "${idx}p" "$pgp")
+    mapfile -t lines < "$pgp"
+    if (( idx < 0 || idx >= ${#lines[@]} )); then
+        echo "Invalid index"
+        return 1
+    fi
+    line_num=$((idx + 1))
+    IFS=: read -r host port db user pass < <(sed -n "${line_num}p" "$pgp")
     read -r -p "Host [$host]: " tmp; host=${tmp:-$host}
     read -r -p "Port [$port]: " tmp; port=${tmp:-$port}
     read -r -p "Database [$db]: " tmp; db=${tmp:-$db}
     read -r -p "User [$user]: " tmp; user=${tmp:-$user}
     read -r -s -p "Password [hidden]: " tmp; echo; pass=${tmp:-$pass}
-    sed -i "${idx}c ${host}:${port}:${db}:${user}:${pass}" "$pgp"
+    sed -i "${line_num}c ${host}:${port}:${db}:${user}:${pass}" "$pgp"
     echo "Updated"
 }
 
