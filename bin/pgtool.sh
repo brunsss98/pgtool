@@ -5,6 +5,7 @@ set -euo pipefail
 PGTOOL_HOME="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 export PGTOOL_HOME
 
+# --- Core libraries ---
 # shellcheck source=lib/colors.sh
 source "$PGTOOL_HOME/lib/colors.sh"
 # shellcheck source=lib/log.sh

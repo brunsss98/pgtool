@@ -1,30 +1,27 @@
 # PGTool Modular Skeleton
 
-This repository starts the migration of the original `pgtool2.sh` script into a modular architecture.
+Este repositorio representa el inicio de la migración del script original `pgtool2.sh` hacia una arquitectura modular y extensible.
 
-## Structure
+## 📁 Estructura
 
-- `bin/pgtool.sh` – main entry point and menu loader.
-- `lib/` – reusable libraries (`colors.sh`, `log.sh`, `utils.sh`, `pgpass.sh`,
-  `menu.sh`).
-- `plugins/` – dynamically loaded extensions. Includes a sample `ejemplo_hello.sh`
-  and a `.pgpass` management plugin. The `backup_core` plugin runs backups based
-  on `etc/connections.json`.
+- `bin/pgtool.sh` – Punto de entrada principal y cargador del menú.
+- `lib/` – Bibliotecas reutilizables:
+  - `colors.sh`: estilos y colores para el terminal.
+  - `log.sh`: logging uniforme.
+  - `utils.sh`: utilidades generales.
+  - `pgpass.sh`: gestión de credenciales `.pgpass`.
+  - `menu.sh`: sistema de menús interactivos.
+  - `config.sh`: (opcional) para leer configuraciones como `etc/connections.json`.
+- `plugins/` – Extensiones cargadas dinámicamente. Incluye ejemplos como:
+  - `ejemplo_hello.sh`: plugin de ejemplo básico.
+  - `pgpass_manage.sh`: gestión de entradas en `.pgpass`.
+  - `backup_core.sh`: backups automáticos según `etc/connections.json`.
+  - `backup_logical.sh`: módulo de backup lógico con soporte extendido.
+  - `legacy_backup.sh`: lanza el antiguo `pgtool2.sh`.
 
-## Usage
+## 🚀 Uso
 
-Run the tool via:
+Ejecuta la herramienta desde la raíz del proyecto:
 
 ```bash
 ./bin/pgtool.sh
-```
-
-Plugins placed under `plugins/` with a `plugin_register` function are loaded automatically. Sample plugins are provided in `plugins/ejemplo_hello.sh` and `plugins/pgpass_manage.sh`.
-
-Backups can be triggered from the `backup_core` plugin, which reads connection
-information from `etc/connections.json` using `lib/config.sh`.
-
-An additional plugin `plugins/backup_logical.sh` demonstrates how to call the
-new logical backup module under `modules/backup/`.
-
-A legacy backup menu is available via the `legacy_backup` plugin, which simply runs the original `pgtool2.sh` script. Place `pgtool2.sh` at the project root (already provided) and choose **Legacy Backup Menu** from the main launcher.
