@@ -5,9 +5,15 @@ set -euo pipefail
 PGTOOL_HOME="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 export PGTOOL_HOME
 
+# --- Core libraries ---
+# shellcheck source=lib/colors.sh
 source "$PGTOOL_HOME/lib/colors.sh"
+# shellcheck source=lib/log.sh
 source "$PGTOOL_HOME/lib/log.sh"
+# shellcheck source=lib/utils.sh
 source "$PGTOOL_HOME/lib/utils.sh"
+# shellcheck source=lib/menu.sh
+source "$PGTOOL_HOME/lib/menu.sh"
 
 plugins_menu_entries=()
 plugins_callbacks=()
@@ -16,6 +22,7 @@ load_plugins() {
     local plugin
     for plugin in "$PGTOOL_HOME/plugins"/*.sh; do
         [[ -f "$plugin" ]] || continue
+        # shellcheck source=/dev/null
         source "$plugin"
         if declare -f plugin_register >/dev/null; then
             local reg_output
@@ -30,29 +37,20 @@ load_plugins() {
 }
 
 show_menu() {
-    echo -e "${MAGENTA}${BOLD}PGTool${NC}"
-    local i=1
-    for entry in "${plugins_menu_entries[@]}"; do
-        echo -e "${CYAN}${BOLD}$i)${NC} ${WHITE}$entry${NC}"
-        ((i++))
-    done
-    echo -e "${CYAN}${BOLD}0)${NC} ${WHITE}Exit${NC}"
+    menu::prompt "PGTool" plugins_menu_entries
 }
 
 main() {
     load_plugins
     log::init "$PGTOOL_HOME/pgtool.log"
     while true; do
-        show_menu
-        read -r -p "Select option: " opt
+        local opt
+        opt=$(show_menu)
         if [[ "$opt" == "0" ]]; then
             break
-        elif [[ "$opt" =~ ^[0-9]+$ && $opt -ge 1 && $opt -le ${#plugins_callbacks[@]} ]]; then
-            local cb="${plugins_callbacks[$((opt-1))]}"
-            "$cb"
-        else
-            echo "Invalid option"
         fi
+        local cb="${plugins_callbacks[$((opt-1))]}"
+        "$cb"
     done
 }
 

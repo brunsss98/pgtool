@@ -1,4 +1,6 @@
+#!/bin/bash
 # Color definitions
+
 NC='\033[0m'
 RED='\033[0;31m'
 GREEN='\033[0;32m'
