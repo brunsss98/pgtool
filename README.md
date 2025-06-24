@@ -1,35 +1,68 @@
-# PGTool
+# PGTool Modular Skeleton
 
-PGTool is a modular Bash toolkit for PostgreSQL management. The project provides a lightweight plugin-based framework to handle backups, monitoring and administration tasks without external dependencies.
+Este repositorio representa el inicio de la migración del script original `pgtool2.sh` hacia una arquitectura modular, extensible y mantenible para la gestión de PostgreSQL.
 
-## Directory structure
+## 📁 Estructura del proyecto
 
-```
 pgtool/
-├── bin/              # entrypoints
-│   └── pgtool.sh     # main launcher and menu
-├── lib/              # reusable libraries
-├── modules/          # grouped functionality (backup, monitoring...)
-├── plugins/          # optional extensions loaded at startup
-├── etc/              # user configuration files
-├── backups/          # default backup location
-└── logs/             # unified logs
-```
+├── bin/ # Scripts principales
+│ └── pgtool.sh # Lanzador principal y cargador de menú
+├── lib/ # Bibliotecas reutilizables (colores, log, utils...)
+├── modules/ # Módulos organizados por funcionalidad (backup, monitoreo, etc)
+├── plugins/ # Plugins opcionales cargados dinámicamente
+├── etc/ # Archivos de configuración
+├── backups/ # Ruta por defecto para backups
+└── logs/ # Archivos de log centralizados
 
-See `modules/` and `plugins/` for examples of how to extend the tool. Each plugin defines a `plugin_register` function that returns its metadata and callback.
+python
+Copy
+Edit
 
-## Usage
+## 🚀 Uso
 
-After cloning the repository simply run:
+Ejecuta la herramienta desde la raíz del proyecto:
 
 ```bash
 ./bin/pgtool.sh
-```
+El menú se genera dinámicamente cargando todos los plugins que contengan una función plugin_register.
 
-The launcher discovers plugins in the `plugins/` directory and adds them to the menu automatically.
+🧩 Plugins incluidos
+ejemplo_hello.sh: plugin de ejemplo simple.
 
-Configuration for backups can be stored in `etc/connections.json` and is parsed by `lib/config.sh` without requiring `jq`.
+pgpass_manage.sh: añade y elimina entradas en .pgpass.
 
-## Status
+backup_core.sh: realiza backups físicos/lógicos definidos en etc/connections.json.
 
-This repository contains an initial skeleton. More modules will be added over time for monitoring, user management and maintenance. Contributions are welcome.
+backup_logical.sh: permite ejecutar backups lógicos en varios formatos (custom, plain, directory, etc).
+
+legacy_backup.sh: ejecuta el antiguo pgtool2.sh para compatibilidad.
+
+⚙ Configuración
+Algunos plugins utilizan etc/connections.json para obtener la lista de servidores y credenciales. Este archivo se puede procesar sin jq, gracias a funciones internas en lib/config.sh.
+
+Ejemplo de connections.json:
+json
+Copy
+Edit
+[
+  {
+    "name": "producción",
+    "host": "192.168.1.10",
+    "port": 5432,
+    "user": "postgres",
+    "database": "miapp"
+  },
+  {
+    "name": "test",
+    "host": "192.168.1.11",
+    "port": 5432,
+    "user": "pguser",
+    "database": "testdb"
+  }
+]
+🔧 Objetivo
+PGTool proporciona una forma flexible y extensible de gestionar entornos PostgreSQL a través de Bash. Su enfoque modular permite añadir nuevas funcionalidades sin romper la base existente.
+
+Este es un proyecto en evolución. Próximamente se incluirán módulos para monitoreo, mantenimiento, gestión de usuarios, alertas, y más.
+
+¡Contribuciones bienvenidas!
