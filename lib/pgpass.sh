@@ -92,4 +92,3 @@ pgpass::menu() {
         esac
     done
 }
-

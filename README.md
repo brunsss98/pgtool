@@ -1,7 +1,6 @@
 # PGTool Modular Skeleton
 
-This repository starts the migration of the original `pgtool2.sh` script into a
-modular architecture.
+This repository starts the migration of the original `pgtool2.sh` script into a modular architecture.
 
 ## Structure
 
@@ -18,8 +17,6 @@ Run the tool via:
 ./bin/pgtool.sh
 ```
 
-Plugins placed under `plugins/` with a `plugin_register` function are loaded
-automatically. Sample plugins are provided in `plugins/ejemplo_hello.sh` and
-`plugins/pgpass_manage.sh`.
+Plugins placed under `plugins/` with a `plugin_register` function are loaded automatically. Sample plugins are provided in `plugins/ejemplo_hello.sh` and `plugins/pgpass_manage.sh`.
 
 A legacy backup menu is available via the `legacy_backup` plugin, which simply runs the original `pgtool2.sh` script. Place `pgtool2.sh` at the project root (already provided) and choose **Legacy Backup Menu** from the main launcher.
